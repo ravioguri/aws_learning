@@ -1,19 +1,17 @@
 from flask import Flask
-#import boto3
+import boto3
 
 app = Flask(__name__)
 
 @app.route("/home")
 def homepage():
-    return "AWS Assignment experiments"
+    return "AWS Assignment experiments lol"
 
 
-@app.route("/home/aws")
+@app.route("/")
 def app_s3():
-    import boto3
-    client = boto3.client('s3', 
-    aws_access_key_id=xxx, 
-    aws_secret_access_key = yyy)
+    
+    client = boto3.client('s3')
     response = client.list_buckets()
 
     buckets=[]
@@ -30,9 +28,9 @@ def app_s3():
         for i in range(len(echo['Contents'])):
             bucketfiles.append(echo.get('Contents', [])[i]['Key'])
             print(bucketfiles[i])
-
-        
-    print(bucketfiles)
+    
+    listToStr = ' '.join([str(elem) for elem in bucketfiles])
+    return listToStr
 
 
 '''@app.route("/home/<folder_name>")
