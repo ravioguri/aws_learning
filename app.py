@@ -1,5 +1,6 @@
 from flask import Flask
 import boto3
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -15,6 +16,7 @@ def app_s3():
     response = client.list_buckets()
 
     buckets=[]
+    names = dict()
     for bucket in response['Buckets']:
         buckets.append(bucket["Name"])
 
@@ -25,15 +27,13 @@ def app_s3():
 
         bucketfiles = []
 
-        for i in range(len(echo['Contents'])):
-            bucketfiles.append(echo.get('Contents', [])[i]['Key'])
-            print(bucketfiles[i])
-    
-    listToStr = ' '.join([str(elem) for elem in bucketfiles])
-    return listToStr
+        for j in range(len(echo['Contents'])):
+            bucketfiles.append(echo.get('Contents', [])[j]['Key'])
+            print(bucketfiles[j])
+        names[i] = bucketfiles
+
+    #listToStr = ' '.join([str(elem) for elem in bucketfiles])
+    return render_template('home.html',allfiles=names)
 
 
-'''@app.route("/home/<folder_name>")
-def home():
-    s3_obj = boto3.resource('s3')'''
     
